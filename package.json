@@ -18,6 +18,7 @@
   "homepage": "https://github.com/EmilbekDzhumakeev/YouTube-Clone-App-backend#readme",
   "dependencies": {
     "config": "^3.3.6",
+    "express": "^4.17.1",
     "mongoose": "^5.13.2"
   }
 }
