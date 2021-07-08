@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-​
+​const Joi  = require ('joi');
 ​
 //! ENDPOINTS:
 ​
@@ -26,8 +26,16 @@ const commentSchema = mongoose.Schema({
 });
 ​
 const Reply = mongoose.model("Reply", replySchema);
-const Comment = mongoose.model("Comment", commentSchema);
+const Comment = mongoose.model("Comment", commentSchema); 
+
+function validateComment(comment){
+  const schema  = Joi.object({
+    text: Joi.string().min(5).max(1000).required(),
+  });
+  return schema.validate(comment);
+}
 ​
+exports.validate = validateComment;
 module.exports = {
   Reply: Reply,
   Comment: Comment,
