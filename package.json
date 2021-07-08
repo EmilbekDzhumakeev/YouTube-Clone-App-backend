@@ -1,0 +1,22 @@
+{
+  "name": "youtube-clone-app-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EmilbekDzhumakeev/YouTube-Clone-App-backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EmilbekDzhumakeev/YouTube-Clone-App-backend/issues"
+  },
+  "homepage": "https://github.com/EmilbekDzhumakeev/YouTube-Clone-App-backend#readme",
+  "dependencies": {
+    "mongoose": "^5.13.2"
+  }
+}
