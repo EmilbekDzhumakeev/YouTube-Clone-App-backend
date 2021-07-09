@@ -7,7 +7,7 @@ const replySchema = new mongoose.Schema({
 });
 
 const commentSchema = new mongoose.Schema({
-    text: { type: String, required: true, minlength: 5, maxlength: 50 },
+    text: { type: String, required: true, minlength: 5, maxlength: 500 },
     dateAdded: { type: Date, default: Date.now },
     replies: [replySchema],
     likes: { type: Number, required: true, default: 0 },
@@ -18,11 +18,16 @@ const commentSchema = new mongoose.Schema({
 const Comment = mongoose.model('Comment', commentSchema); 
 const Reply = mongoose.model("Reply", replySchema);
 
-function validateComment(body){
+
+function validateComment(comment){
     const schema = Joi.object({
-        text: Joi.string()
+        text: Joi.string().min(5).max(500).required(), 
+        likes: Joi.number(),
+        dislikes: Joi.number(),
+        videoId: Joi.string().min(4).max(50).required(),
+
     });
-    return schema.validate(body);
+    return schema.validate(comment);
 }
 
 

@@ -4,9 +4,9 @@ const router = express.Router();
 
 
 // All endpoints and route handlers go here
- /*router.post('/', async (req, res) => {
+ router.post('/', async (req, res) => {
     try {
-        const { error } = validate(req.body);
+        const { error } = validate(req.body);  
         if (error)
         return res.status(400).send(error);
    
@@ -14,7 +14,8 @@ const router = express.Router();
 
     text: req.body.text,
     likes: req.body.likes,
-    dislikes: req.body.dislikes,
+    dislikes: req.body.dislikes, 
+    videoId: req.body.videoId,
     });
 
     await comment.save();
@@ -24,7 +25,7 @@ const router = express.Router();
     }
    }); 
    
-*/ 
+/*
 router.post('/', async (req, res) => {
     try {
    
@@ -39,5 +40,5 @@ router.post('/', async (req, res) => {
     return res.status(500).send(`Internal Server Error: ${ex}`);
     }
    });
-
+*/
 module.exports = router;
