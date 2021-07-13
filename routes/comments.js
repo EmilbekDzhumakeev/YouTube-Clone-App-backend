@@ -52,6 +52,8 @@ router.post('/:id/replies', async (req, res) => {
         const { error } = validateReply(req.body);  
         if (error)
         return res.status(400).send(error);
+
+    const comment = await Comment.findById(req.params.id)
    
     const reply = new Reply({
 
@@ -59,8 +61,10 @@ router.post('/:id/replies', async (req, res) => {
 
     });
 
-    await reply.save();
-    return res.send(reply);
+    comment.replies.push(reply)
+
+    await comment.save();
+    return res.send(comment);
 
 
     } catch (ex) {
@@ -96,19 +100,14 @@ router.put('/:id', async (req, res) => {
 //////////////////////////////////////////////////////////////////// PUT  Likes ////////////////////////////////////////
 router.put('/:id/likes', async (req, res) => {
     try {
-    const { error } = (req.body);
-    if (error) return res.status(400).send(error);
-    const comment = await Comment.findByIdAndUpdate(
-    req.params.id,
-    {
-        likes: req.body.likes,
-        
-    },
-    { new: true }
-    );
+
+        const comment = await Comment.findById(req.params.id) 
+
     if (!comment)
-    return res.status(400).send(`The comment with id "${req.params.id}" d
-   oes not exist.`);
+    return res.status(400).send(`The comment with id "${req.params.id}" does not exist.`);
+
+    comment.likes++
+
     await comment.save();
     return res.send(comment);
     } catch (ex) {
@@ -118,18 +117,13 @@ router.put('/:id/likes', async (req, res) => {
 //////////////////////////////////////////////////////////////////// PUT Dislikes////////////////////////////////////////
 router.put('/:id/dislikes', async (req, res) => {
     try {
-    const { error } = (req.body);
-    if (error) return res.status(400).send(error);
-    const comment = await Comment.findByIdAndUpdate(
-    req.params.id,
-    {
-        dislikes: req.body.dislikes,  
-    },
-    { new: true }
-    );
+        const comment = await Comment.findById(req.params.id)
+
     if (!comment)
-    return res.status(400).send(`The comment with id "${req.params.id}" d
-   oes not exist.`);
+    return res.status(400).send(`The comment with id "${req.params.id}" does not exist.`);
+
+    comment.dislikes++
+
     await comment.save();
     return res.send(comment);
     } catch (ex) {
