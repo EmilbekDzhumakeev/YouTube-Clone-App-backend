@@ -1,4 +1,4 @@
-const { Comment, validate } = require('../models/comment');
+const { Comment, Reply, validate, validateReply} = require('../models/comment');
 const express = require('express');
 const router = express.Router();
 
@@ -14,6 +14,7 @@ router.get('/', async (req, res) => {
 }});
 ////////////////////////////////////////////////////////// GET By ID //////////////////////////////////////////
 router.get('/:id', async (req, res) => {
+    //TODO: refactor to get ALL comments by videoId
     try {
    
     const comment = await Comment.findById(req.params.id);
@@ -44,7 +45,30 @@ router.get('/:id', async (req, res) => {
     } catch (ex) {
     return res.status(500).send(`Internal Server Error: ${ex}`);
     }
+});  
+////////////////////////////////////////////////////////// POST Reply//////////////////////////////////////////
+router.post('/:id/replies', async (req, res) => {
+    try {
+        const { error } = validateReply(req.body);  
+        if (error)
+        return res.status(400).send(error);
+   
+    const reply = new Reply({
+
+    text: req.body.text
+
+    });
+
+    await reply.save();
+    return res.send(reply);
+
+
+    } catch (ex) {
+    return res.status(500).send(`Internal Server Error: ${ex}`);
+    }
 }); 
+
+//TODO: POST a reply to a comment
 //////////////////////////////////////////////////////////////////// PUT ////////////////////////////////////////
 router.put('/:id', async (req, res) => {
     try {
@@ -57,6 +81,49 @@ router.put('/:id', async (req, res) => {
         likes: req.body.likes,
         dislikes: req.body.dislikes, 
         videoId: req.body.videoId,
+    },
+    { new: true }
+    );
+    if (!comment)
+    return res.status(400).send(`The comment with id "${req.params.id}" d
+   oes not exist.`);
+    await comment.save();
+    return res.send(comment);
+    } catch (ex) {
+    return res.status(500).send(`Internal Server Error: ${ex}`);
+    }
+}); 
+//////////////////////////////////////////////////////////////////// PUT  Likes ////////////////////////////////////////
+router.put('/:id/likes', async (req, res) => {
+    try {
+    const { error } = (req.body);
+    if (error) return res.status(400).send(error);
+    const comment = await Comment.findByIdAndUpdate(
+    req.params.id,
+    {
+        likes: req.body.likes,
+        
+    },
+    { new: true }
+    );
+    if (!comment)
+    return res.status(400).send(`The comment with id "${req.params.id}" d
+   oes not exist.`);
+    await comment.save();
+    return res.send(comment);
+    } catch (ex) {
+    return res.status(500).send(`Internal Server Error: ${ex}`);
+    }
+});  
+//////////////////////////////////////////////////////////////////// PUT Dislikes////////////////////////////////////////
+router.put('/:id/dislikes', async (req, res) => {
+    try {
+    const { error } = (req.body);
+    if (error) return res.status(400).send(error);
+    const comment = await Comment.findByIdAndUpdate(
+    req.params.id,
+    {
+        dislikes: req.body.dislikes,  
     },
     { new: true }
     );

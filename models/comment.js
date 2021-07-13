@@ -28,11 +28,19 @@ function validateComment(comment){
 
     });
     return schema.validate(comment);
+} 
+
+function validateReply(reply){
+  const schema = Joi.object({
+      text: Joi.string().min(5).max(500).required(), 
+  });
+  return schema.validate(reply);
 }
 
 
 module.exports = {
   Comment: Comment,
   Reply: Reply,
-  validate: validateComment
+  validate: validateComment,
+  validateReply: validateReply
 }
